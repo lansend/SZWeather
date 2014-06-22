@@ -4,8 +4,29 @@ $(document).ready(function() {
 });
 
 function getDataFromSZMB(){
+	var url = DATA_PATH+"szWeather/szEveryAreaMonitor.js?"+Math.random();		
 	
-		createScript(DATA_PATH+"szWeather/szEveryAreaMonitor.js?"+Math.random(),initNoteMonitor);
+    $.ajax({
+    	 contentType  :"application/x-www-form-urlencoded; charset=UTF-8",
+         type: "get",
+         url: url,
+         dataType: "text",
+         success: function(data,textStatus,jqXHR ){
+         	regExp = new RegExp(/({".*})(;)/);
+
+			regExp.exec(data);
+
+         	var group = data.match(regExp);  
+
+			SZ121_EveryAreaMonitor	= JSON.parse(group[1]);
+
+         	initNoteMonitor();
+         	
+         },
+         error: function(jqXHR,textStatus,errorThrown ){
+             alert(errorThrown);
+         }
+     });	
 	
 }
 

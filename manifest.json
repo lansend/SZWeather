@@ -17,6 +17,6 @@
         "default_popup": "popup.html"
     },
     "permissions": [
-        "http://www.szmb.gov.cn/data_cache/szWeather/szEveryAreaMonitor.js?*"
+        "http://www.szmb.gov.cn/*"
     ]    
 }
