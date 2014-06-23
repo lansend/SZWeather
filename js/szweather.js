@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 function getDataFromSZMB(){
 
-	var stationList = ["G3751","G3553","G3828","G3527","X3547"];
+	var stationList = ["G1122","G3751","G3553","G3828","G3527","X3547"];
 
 	var url = DATA_PATH+"szWeather/szEveryAreaMonitor.js?"+Math.random();		
 	
@@ -24,7 +24,11 @@ function getDataFromSZMB(){
 			
          	initNoteMonitor(stationList,false);
 
-         	getHistoryDataFromSZMB();
+         	if(data.indexOf(stationList[0])==-1){
+
+         		getHistoryDataFromSZMB();
+
+         	}
          	
          },
          error: function(jqXHR,textStatus,errorThrown ){
