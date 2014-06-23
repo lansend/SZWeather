@@ -4,34 +4,87 @@ $(document).ready(function() {
 });
 
 function getDataFromSZMB(){
+
+	var stationList = ["G3751","G3553","G3828","G3527","X3547"];
+
 	var url = DATA_PATH+"szWeather/szEveryAreaMonitor.js?"+Math.random();		
 	
     $.ajax({
-    	 contentType  :"application/x-www-form-urlencoded; charset=UTF-8",
          type: "get",
          url: url,
          dataType: "text",
          success: function(data,textStatus,jqXHR ){
-         	regExp = new RegExp(/({".*})(;)/);
+         	var regExp = new RegExp(/({".*})(;)/);
 
 			regExp.exec(data);
 
-         	var group = data.match(regExp);  
+			var group = data.match(regExp);  
 
 			SZ121_EveryAreaMonitor	= JSON.parse(group[1]);
+			
+         	initNoteMonitor(stationList,false);
 
-         	initNoteMonitor();
+         	getHistoryDataFromSZMB();
          	
          },
          error: function(jqXHR,textStatus,errorThrown ){
              alert(errorThrown);
          }
      });	
-	
+
 }
 
-function initNoteMonitor(){
-	var stationList = ["G3751","G3553","G3828","G3527","X3547","G3761","G1166","G1121"];
+function getHistoryDataFromSZMB(){
+
+	var stationList = ["G1122"];
+
+    var currentDate=new Date();
+	currentDate.setMinutes(currentDate.getMinutes()-19);
+
+
+	for(var minutes=0;minutes<6;minutes++){
+
+		var hisUrl = "http://www.szmb.gov.cn/data_center/?controller=shenzhenweather&action=hismonitor&json=1&date=";
+
+		currentDate.setMinutes(currentDate.getMinutes()-1);
+
+		var dateTimeStr = currentDate.Format("yyyy-MM-dd hh:mm");
+
+		hisUrl = hisUrl + encodeURIComponent(dateTimeStr);
+
+		var response = $.ajax({
+	         type: "get",
+	         url: hisUrl,
+	         dataType: "text",
+	         async : false
+	    });	    
+
+	    var responseText = response.responseText;
+
+     	var regExp = new RegExp(/({".*})(;)/);
+
+		regExp.exec(responseText);	
+
+	    if(regExp.test(responseText)){
+
+	    	var group = responseText.match(regExp); 
+
+	    	SZ121_EveryAreaMonitor	= JSON.parse(group[1]);
+
+	    	initNoteMonitor(stationList,true);
+
+	    	break;
+
+	    }
+
+	}
+
+}
+
+
+
+function initNoteMonitor(stationList,beforeFlag){
+	
 
 	for (var index=0;index<stationList.length;index++){
 		var station = stationList[index];
@@ -54,7 +107,7 @@ function initNoteMonitor(){
 	    
 	    var areaNameDiv=$('<div></div>');      
 	    areaNameDiv.attr('id','areaName');           
-	    areaNameDiv.html(areaName);    
+	    areaNameDiv.html(areaName+SZ121_EveryAreaMonitor[station].DDATETIME.substr(10));    
 	    areaNameDiv.appendTo(areaWeatherDiv);       
 
 	    var temperatureDiv=$('<div></div>');       
@@ -71,9 +124,15 @@ function initNoteMonitor(){
 	    var windLevelDiv=$('<div></div>');        
 	    windLevelDiv.attr('id','windLevel');           
 	    windLevelDiv.html(windLevel);    
-	    windLevelDiv.appendTo(areaWeatherDiv);       
+	    windLevelDiv.appendTo(areaWeatherDiv);  
 
-	    areaWeatherDiv.appendTo($('body'));           
+	    if(beforeFlag==true){
+	    	areaWeatherDiv.prependTo($('body'));           	
+	    }else{
+	    	areaWeatherDiv.appendTo($('body'));     
+	    }
+
+	    
 	}
 
 
