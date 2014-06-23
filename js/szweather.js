@@ -5,12 +5,74 @@ $(document).ready(function() {
 
 function getDataFromSZMB(){
 	
-		createScript(DATA_PATH+"szWeather/szEveryAreaMonitor.js?"+Math.random(),initNoteMonitor);
-	
+	createScript(DATA_PATH+"szWeather/szEveryAreaMonitor.js?"+Math.random(),
+		receiveDataFromSZMB);
+
 }
 
-function initNoteMonitor(){
-	var stationList = ["G3751","G3553","G3828","G3527","X3547"];
+function receiveDataFromSZMB(){
+
+	var stationList = ["G3751", "G3553", "G3828", "G3527", "X3547"];
+
+	initNoteMonitor(stationList,false);
+
+	if(SZ121_EveryAreaMonitor["G1122"]==undefined){
+		minutes = 6;
+		currentDate = new Date();
+		currentDate.setMinutes(currentDate.getMinutes() - 19);		
+		getHistoryDataFromSZMB();
+	}
+
+}
+
+function getHistoryDataFromSZMB(){
+
+	var hisUrl = "http://www.szmb.gov.cn/data_center/?controller=shenzhenweather&action=hismonitor&json=1&date=";
+
+	currentDate.setMinutes(currentDate.getMinutes() - 1);
+
+	dateTimeStr = currentDate.Format("yyyy-MM-dd hh:mm");
+
+	hisUrl = hisUrl + encodeURIComponent(dateTimeStr);
+
+
+	createScript(hisUrl,
+		receiveHistoryDataFromSZMB);
+
+
+
+}
+
+function receiveHistoryDataFromSZMB(){
+
+	var stationList = ["G1122"];
+
+
+	try{eval("var curdata=SZ121_EveryAreaMonitor"+
+		dateTimeStr.replace(/(-|:| )/g,''));}catch(e){}
+
+
+	SZ121_EveryAreaMonitor = curdata;	
+
+	if(SZ121_EveryAreaMonitor[stationList[0]]!=undefined){
+
+		initNoteMonitor(stationList,true);
+
+	}else if(minutes>0){
+
+		minutes=minutes-1;
+
+
+		getHistoryDataFromSZMB();
+
+	}
+
+}
+
+
+
+
+function initNoteMonitor(stationList,beforeFlag){
 
 	for (var index=0;index<stationList.length;index++){
 		var station = stationList[index];
@@ -52,7 +114,11 @@ function initNoteMonitor(){
 	    windLevelDiv.html(windLevel);    
 	    windLevelDiv.appendTo(areaWeatherDiv);       
 
-	    areaWeatherDiv.appendTo($('body'));           
+		if (beforeFlag == true) {
+			areaWeatherDiv.prependTo($('body'));
+		} else {
+			areaWeatherDiv.appendTo($('body'));
+		}       
 	}
 
 
