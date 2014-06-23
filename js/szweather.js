@@ -10,7 +10,7 @@ function getDataFromSZMB(){
 }
 
 function initNoteMonitor(){
-	var stationList = ["G3751","G3553","G3828","G3527","X3547","G3761","G1166","G1121"];
+	var stationList = ["G3751","G3553","G3828","G3527","X3547"];
 
 	for (var index=0;index<stationList.length;index++){
 		var station = stationList[index];
