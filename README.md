@@ -1,4 +1,4 @@
 SZWeather
 =========
 
-Chrome Plugins , Show the data from SZMB
+Chrome Plugin , Show the data from SZMB
