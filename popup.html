@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="refresh" content="60">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 220px;
+    color:white;
+    font-family: "微软雅黑","黑体","宋体";
+}
+
+.areaWeather{
+	padding-bottom: 5px;
+	border-bottom: 1px solid blue;
+	background-color: #6699FF;
+}
+
+#windDirection{
+	display: block;
+	text-align: left;
+	font-size: 25;
+	font-weight: 700;
+	padding:5px  0px 0px 0px;
+	
+}
+
+#windLevel{
+	display: block;
+	text-align: left;
+	font-size: 8;
+}
+
+
+#areaName{
+	display: inline;
+	font-size: 15;
+}
+
+#temperature{
+	display: inline;
+	text-align: right;
+	float:right;
+	font-size: 15;
+}
+
+
+
+</style>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/lib.js"></script>
+<script src="js/config.js"></script>
+<script src="js/szweather.js"></script>
+</script>
+</head>
+<body>
+<div class="areaWeather" style="display: none">
+	<div id="areaName"></div>
+	<div id="temperature"></div>
+	<div id="windDirection"></div>
+	<div id="windLevel"></div>
+</div>
+</body>
+</html>
