@@ -95,7 +95,7 @@ function initNoteMonitor(stationList, beforeFlag) {
 
 		var areaNameDiv = $('<div></div>');
 		areaNameDiv.attr('id', 'areaName');
-		areaNameDiv.html(areaName);
+		areaNameDiv.html(areaName + SZ121_EveryAreaMonitor[station].DDATETIME.substr(10));
 		areaNameDiv.appendTo(areaWeatherDiv);
 
 		var temperatureDiv = $('<div></div>');
