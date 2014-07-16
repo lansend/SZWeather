@@ -106,7 +106,7 @@ function initNoteMonitor(stationList, beforeFlag) {
 
 		var windDirectionDiv = $('<div></div>');
 		windDirectionDiv.attr('id', 'windDirection');
-		windDirectionDiv.html(windDirection);
+		windDirectionDiv.html(windDirection+"(角度："+SZ121_EveryAreaMonitor[station].WD+")");
 		windDirectionDiv.appendTo(areaWeatherDiv);
 
 		var windLevelDiv = $('<div></div>');
